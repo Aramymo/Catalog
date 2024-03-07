@@ -1,4 +1,6 @@
 <?php
+namespace Catalog;
+use PDO;
 class ConnectDB
 {
     private static $instance = null;
