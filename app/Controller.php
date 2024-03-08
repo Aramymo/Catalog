@@ -4,14 +4,10 @@ require_once '../vendor/autoload.php';
 use Catalog\NodeHandler;
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    if(empty($_POST['node_name']))
+    if(!empty($_POST['node_name']))
     {
-        $aboba = NodeHandler::testNameCheck("EMPTY TEXT");
-        echo $aboba;
+        $data['name'] = NodeHandler::createRootNode($_POST['node_name']);
     }
-    else
-    {
-        $aboba = NodeHandler::testNameCheck($_POST['node_name']);
-        echo $aboba;
-    }
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($data);
 }

@@ -7,9 +7,13 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     </head>
     <body>
-        <form action="../app/Controller.php" method="POST">
-            Node name: <input type="text" name="node_name"><br>
+        <!--action="../app/Controller.php"!-->
+        <form method ="POST" id="create-node">
+            Node name: <input type="text" name="node_name" id="node_name"><br>
             <input type="submit">
         </form>
+        <div id="node_message"></div>
+        <script> <?php include __DIR__ .'/../src/scripts/jquery-3.7.1.js'?></script>
+        <script> <?php include __DIR__ . '/../src/scripts/send_new_node.js'?></script>
     </body>
 </html>
