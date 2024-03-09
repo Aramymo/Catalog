@@ -1,24 +1,3 @@
-document.onload = generateCatalog();
-function generateCatalog()
-{
-    $.ajax({
-        url : "http://localhost:8888/app/Controller.php",
-        type: "GET",
-        dataType: "json",
-        cache: false,
-        success: function(data){
-            //отображение сообщения об успехе
-            console.log(data);
-            treeData = buildTree(data);
-            console.log(treeData);
-            displayCatalog(treeData);
-        },
-        error: function(xhr, status, error){
-            //отображение сообщения об ошибке
-            console.error(xhr);
-        }
-    });
-}
 function displayCatalog(items, level = 0) {
     items.forEach(item => {
         if(level == 0)
@@ -38,18 +17,4 @@ function displayCatalog(items, level = 0) {
             displayCatalog(item.children, level + 1); // Рекурсивно обрабатываем вложенные элементы
         }
     });
-}
-
-function buildTree(data, parentId = null) {
-    const tree = [];
-    for (const item of data) {
-        if (item.parent_id === parentId) {
-            const children = buildTree(data, item.id);
-            if (children.length) {
-                item.children = children;
-            }
-            tree.push(item);
-        }
-    }
-    return tree;
 }

@@ -1,5 +1,7 @@
-document.onload = showUser();
-function showUser()
+document.onload = getTreeData();
+// btnAdd = document.getElementById("btn-add");
+// btnAdd.addEventListener('click', showUser());
+function getTreeData()
 {
     $.ajax({
         url : "http://localhost:8888/app/Controller.php",
@@ -8,32 +10,16 @@ function showUser()
         cache: false,
         success: function(data){
             //отображение сообщения об успехе
-            console.log(data);
-            document.getElementById('select_node').innerHTML = '';
-            document.getElementById("select_node").innerHTML += '<select name="node_list" id="node_list">' +
-                                                                    '<option value="0">Добавить корневой узел</option>' +
-                                                                '</select>';
+            //console.log(data);
             treeData = buildTree(data);
+            displayCatalog(treeData);
             console.log(treeData);
-            displaySelectNode(treeData);
+            displaySelectNode(treeData,'add_node');
+            displaySelectNode(treeData,'delete_node');
         },
         error: function(xhr, status, error){
             //отображение сообщения об ошибке
             console.error(xhr);
-        }
-    });
-}
-
-function displaySelectNode(items, level = 0) {
-    //console.log(items[item]["id"]);
-    items.forEach(item => {
-        //console.log(item);
-        if(item[item["parent_id"]])
-        aboba = '&nbsp;'.repeat(level);
-        //console.log(indentation);
-        document.getElementById('node_list').innerHTML += "<option value=" + item["id"] +">" + '&emsp;'.repeat(level) + item["name"] + "</option>"; // Добавляем пробелы (4 пробела за уровень)
-        if (item.children && item.children.length > 0) {
-            displaySelectNode(item.children, level + 1); // Рекурсивно обрабатываем вложенные элементы
         }
     });
 }

@@ -7,7 +7,7 @@
         <!--bootstrap для js!-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    
+        
         <script>
             // Обработчик клика на вложенный элемент
             document.querySelectorAll('.dropdown-submenu .dropdown-toggle').forEach(item => {
@@ -53,7 +53,7 @@
             </div>
         </div>
     </nav>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-window">
+<button id="add-btn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-window">
   Добавить
 </button>
 
@@ -67,10 +67,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+                <input type="hidden" id="form_type" value="add_node">
                 Название узла: <input type="text" name="node_name" id="node_name"><br>
                 <div id="node_message"></div>
                 <p>Выберите место добавления узла</p>
-                <div id="select_node"></div>
+                <div id="add_node"></div>
             </form>
       </div>
       <div class="modal-footer">
@@ -88,7 +89,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="delete-window" tabindex="-1" aria-labelledby="deleteWindowModalLabel" aria-hidden="true">
-<form method ="POST" id="create-node">
+<form method ="POST" id="delete-node">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -96,8 +97,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+                <input type="hidden" id="delete_form" value="delete_node">
                 <p>Выберите узел для удаления</p>
-                <div id="select_node"></div>
+                <div id="delete_node"></div>
             </form>
       </div>
       <div class="modal-footer">
@@ -108,9 +110,10 @@
   </div>
   </form>
 </div>
-
-        <script> <?php include __DIR__ . '/../src/scripts/send_new_node.js'?></script>
         <script> <?php include __DIR__ . '/../src/scripts/get_nodes.js'?></script>
         <script> <?php include __DIR__ . '/../src/scripts/display_catalog_nodes.js'?></script>
+        <script> <?php include __DIR__ . '/../src/scripts/display_select_nodes.js'?></script>
+        <script> <?php include __DIR__ . '/../src/scripts/send_new_node.js'?></script>
+        <script> <?php include __DIR__ . '/../src/scripts/delete_node.js'?></script>
     </body>
 </html>

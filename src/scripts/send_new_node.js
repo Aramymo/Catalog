@@ -1,7 +1,10 @@
-$("form").submit(function(event){
+$('#create-node').submit(function(event){
+    event.preventDefault();
+    console.log("Triggered");
     var formData ={
         node_name: $('#node_name').val().trim(),
-        node_list: $('#node_list').val(),
+        node_list: $('#select_add_node').val(),
+        form_type: $('#form_type').val(),
     };
     if(formData["node_name"].length === 0)
     {
@@ -18,7 +21,7 @@ $("form").submit(function(event){
             encode: true,
             success: function(data){
                 //отображение сообщения об успехе
-                console.log(data);
+                //console.log(data);
                 document.getElementById('node_message').innerHTML = '';
                 document.getElementById("node_message").innerHTML += "<div class='review_send_status_success centered_text'>Успех " + data["name"] + "</div>";
             },
@@ -30,5 +33,4 @@ $("form").submit(function(event){
             }
         });
     }
-    event.preventDefault();
 });

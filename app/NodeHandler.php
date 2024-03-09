@@ -17,12 +17,22 @@ class NodeHandler
         }
         else
         {
-            $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
+            echo $node_id;
+            if($node_id === "null")
+            {
+                $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
+                                    VALUES (:node_name, NULL)');
+                $stmt->bindParam(':node_name', $node_name);
+            }
+            else
+            {
+                $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
                                     VALUES (:node_name, :node_id)');
-            $stmt->bindParam(':node_name', $node_name);
-            $stmt->bindParam(':node_id', $node_id);
+                $stmt->bindParam(':node_name', $node_name);
+                $stmt->bindParam(':node_id', $node_id);
+            }
             $stmt->execute();
-            $node_name = $node_name . "+abobus" . "+".$node_id;
+            $node_name = $node_name . " добавлен";
             return $node_name;
         }
     }
@@ -36,6 +46,15 @@ class NodeHandler
             JOIN Tree t ON c.parent_id = t.id
             )
             SELECT * FROM Tree;');
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public static function deleteNode($node_id)
+    {
+        $stmt = ConnectDB::prepare('DELETE FROM catalog.categories WHERE id = :element_id;');
+        $stmt->bindParam(':element_id', $node_id);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result;

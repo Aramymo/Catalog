@@ -4,11 +4,18 @@ require_once '../vendor/autoload.php';
 use Catalog\NodeHandler;
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    if(!empty($_POST['node_name']))
+    if($_POST['form_type'] === 'add_node')
     {
-        $data['name'] = NodeHandler::createNode($_POST['node_name'],$_POST["node_list"]);
+        if(!empty($_POST['node_name']))
+        {
+            $data['name'] = NodeHandler::createNode($_POST['node_name'],$_POST["node_list"]);
+        }
+        header('Content-Type: application/json; charset=utf-8');
     }
-    header('Content-Type: application/json; charset=utf-8');
+    elseif($_POST['form_type'] === 'delete_node')
+    {
+        $data['name'] = NodeHandler::deleteNode($_POST['node_list']);
+    }
     echo json_encode($data);
 }
 if($_SERVER['REQUEST_METHOD'] === 'GET')
