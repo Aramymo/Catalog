@@ -1,6 +1,7 @@
 $("form").submit(function(event){
     var formData ={
         node_name: $('#node_name').val().trim(),
+        node_list: $('#node_list').val(),
     };
     if(formData["node_name"].length === 0)
     {

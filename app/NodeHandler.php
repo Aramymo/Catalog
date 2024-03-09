@@ -4,7 +4,7 @@ require_once '../vendor/autoload.php';
 use Catalog\ConnectDB;
 class NodeHandler
 {
-    public static function createRootNode($node_name)
+    public static function createNode($node_name, $node_id)
     {
         $stmt = ConnectDB::prepare('SELECT COUNT(name) FROM catalog.categories
                                     WHERE name = :node_name');
@@ -18,10 +18,11 @@ class NodeHandler
         else
         {
             $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
-                                    VALUES (:node_name, null)');
+                                    VALUES (:node_name, :node_id)');
             $stmt->bindParam(':node_name', $node_name);
+            $stmt->bindParam(':node_id', $node_id);
             $stmt->execute();
-            $node_name = $node_name . "+abobus";
+            $node_name = $node_name . "+abobus" . "+".$node_id;
             return $node_name;
         }
     }
