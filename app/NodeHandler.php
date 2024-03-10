@@ -72,6 +72,12 @@ class NodeHandler
             SELECT * FROM Tree;');
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if ($result === false) 
+        {
+            $result = "Ошибка получения каталога";
+        }
+
         return $result;
     }
 
