@@ -4,6 +4,7 @@ require_once '../vendor/autoload.php';
 use Catalog\NodeHandler;
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
+    // Проверка типа формы
     if($_POST['form_type'] === 'add_node')
     {
         if(!empty($_POST['node_name']))

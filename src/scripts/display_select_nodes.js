@@ -1,3 +1,4 @@
+//отображает нужную структуру select в контейнере fieldName
 function displaySelectNode(treeData, fieldName)
 {
     selectFieldName = "select_" + fieldName;
@@ -10,6 +11,7 @@ function displaySelectNode(treeData, fieldName)
     generateSelect(treeData,selectFieldName);
 }
 
+//генерирует option для select
 function generateSelect(items, selectName, level = 0) {
     items.forEach(item => {
         document.getElementById(selectName).innerHTML += "<option value=" + item["id"] +">" + '&emsp;'.repeat(level) + item["name"] + "</option>"; // Добавляем пробелы (4 пробела за уровень)

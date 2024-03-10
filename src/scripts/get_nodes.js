@@ -1,5 +1,7 @@
+//загрузка и отображение при загрузке страницы
 document.onload = getTreeData();
-var treeData = [];
+
+//получает данные из бд и отображает
 function getTreeData()
 {
     $.ajax({
@@ -8,7 +10,9 @@ function getTreeData()
         dataType: "json",
         cache: false,
         success: function(data){
+            //загрузка
             treeData = buildTree(data);
+            //отображение
             displayCatalog(treeData);
             displaySelectNode(treeData,'add_node');
             displaySelectNode(treeData,'delete_node');
@@ -20,6 +24,7 @@ function getTreeData()
     });
 }
 
+//генерация данных в виде дерева
 function buildTree(data, parentId = null) {
     const tree = [];
     for (const item of data) {

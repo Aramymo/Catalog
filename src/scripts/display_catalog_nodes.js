@@ -1,9 +1,17 @@
+//отображает нужную структуру в каталоге страницы
 function displayCatalog(items)
 {
     document.getElementById('catalog_node_list').innerHTML = ' ';
     generateCatalog(items);
 }
 
+//генерирует структуру 
+//li
+//--span
+//--ul
+//----li
+//------span
+//------ul...
 function generateCatalog(items, level = 0) {
     items.forEach(item => {
         if(level == 0)

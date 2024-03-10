@@ -4,9 +4,10 @@ $('#create-node').submit(function(event){
         node_list: $('#select_add_node').val(),
         form_type: $('#form_type').val(),
     };
-    console.log(formData["form_type"]);
+
     if(formData["node_name"].length === 0)
     {
+        //если имя пустое вывод сообщения
         document.getElementById('add_node_message').innerHTML = '';
         document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>Введите имя</div>";
     }
@@ -19,7 +20,9 @@ $('#create-node').submit(function(event){
             data: formData,
             encode: true,
             success: function(data){
+                //обновление деревьев сразу после запроса
                 getTreeData();
+                //отображение результата запроса
                 document.getElementById('add_node_message').innerHTML = '';
                 document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>" + data["message"] + "</div>";
             },
@@ -29,9 +32,11 @@ $('#create-node').submit(function(event){
             }
         });
     }
+
     event.preventDefault();
 });
 
+//очистка контейнера с сообщением результата запроса
 function hideAddMessageDiv()
 {
     document.getElementById('add_node_message').innerHTML = '';
