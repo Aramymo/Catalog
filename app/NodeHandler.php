@@ -1,14 +1,27 @@
 <?php
+
 namespace Catalog;
+
 require_once $_SERVER["DOCUMENT_ROOT"].'/vendor/autoload.php';
+
 use Catalog\ConnectDB;
+
 use ErrorException;
 
 class NodeHandler
 {
     const MAX_NEST_LEVEL = 3;
     //Создание нового узла
-    public static function createNode($node_name, $node_id)
+    /**
+     * Создаёт новый узел в зависимости от $node_id
+     * если $node_id = null - создастся корневой элемент
+     * иначе создастся дочерний элемент для элемента с $node_id
+     * @param string $node_name
+     * @param mixed $node_id
+     * 
+     * @return string
+     */
+    public static function createNode(string $node_name, mixed $node_id) : string
     {
         try
         {
@@ -19,6 +32,10 @@ class NodeHandler
                 //Если корневой элемент
                 $stmt = ConnectDB::prepare('INSERT INTO categories(name,parent_id)
                                     VALUES (:node_name, NULL)');
+                if(!$stmt)
+                {
+                    return "Ошибка подключения";
+                }
                 $stmt->bindParam(':node_name', $node_name);
             }
             else
@@ -40,16 +57,12 @@ class NodeHandler
     }
 
     //Получение всех узлов
-    public static function getNodes()
+    /**
+     * Возвращает все элемменты в базе данных в виде их актуальных связей с родительскими элементами
+     * @return array
+     */
+    public static function getNodes() : array
     {
-        //Запрос работает в таком виде, что результат будет
-        //в виде удобного массива структурой
-        //Корневой элемент
-        //--Подэлемент
-        //----Подэлемент
-        //----Подэлемент
-        //--Подэлемент
-        //Корневой элемент...
         $stmt = ConnectDB::prepare('WITH RECURSIVE Tree AS (
             SELECT id, name, parent_id FROM categories WHERE parent_id IS NULL
             UNION ALL
@@ -62,8 +75,13 @@ class NodeHandler
         return $result;
     }
 
-    //Удаление узла и его подузлов
-    public static function deleteNode($node_id)
+    /**
+     * Удаленяет узел с $node_id и всех его потомков
+     * @param mixed $node_id
+     * 
+     * @return string
+     */
+    public static function deleteNode(mixed $node_id) : string
     {
         $stmt = ConnectDB::prepare('DELETE FROM categories WHERE id = :element_id;');
         $stmt->bindParam(':element_id', $node_id);
@@ -72,7 +90,14 @@ class NodeHandler
         return $result;
     }
 
-    protected static function validateNode($node_name, $node_id)
+    /**
+     * Проверяет $node_name на уникальность и $node_id на уровень вложенности
+     * @param string $node_name
+     * @param mixed $node_id
+     * 
+     * @throws ErrorException
+     */
+    protected static function validateNode(string $node_name, mixed $node_id)
     {
         $stmt = ConnectDB::prepare('SELECT COUNT(name) FROM categories
                                     WHERE name = :node_name');
@@ -95,8 +120,12 @@ class NodeHandler
             SELECT lvl FROM category_path WHERE id = :node_id;');
         $stmt->bindParam(':node_id', $node_id);
         $stmt->execute();
-        $current_node_nest_level = $stmt->fetch()["lvl"];
-        if($current_node_nest_level >= static::MAX_NEST_LEVEL - 1)
+        $current_node_nest_level = $stmt->fetch();
+        if (!isset($current_node_nest_level["lvl"])) 
+        {
+            $current_node_nest_level["lvl"] = 0;
+        }
+        else if($current_node_nest_level["lvl"] >= static::MAX_NEST_LEVEL - 1)
         {
             $message = "Уровень вложенности превысил ". static::MAX_NEST_LEVEL;
             throw new ErrorException($message);

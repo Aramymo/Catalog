@@ -18,18 +18,25 @@ function getTreeData()
         },
         error: function(xhr, status, error){
             //отображение сообщения об ошибке
-            console.error(xhr);
+            alert("Проблема с подключением к базе данных");
+            document.getElementById('catalog_node_list').innerHTML = '<li class="dropdown-menu"><span class="dropdown-item"Ошибка при отображении каталога</span></li>';
+            document.getElementById("delete_button").disabled = true;
+            document.getElementById("add_button").disabled = true;
         }
     });
 }
 
 //генерация данных в виде дерева
-function buildTree(data, parentId = null) {
+function buildTree(data, parentId = null) 
+{
     const tree = [];
-    for (const item of data) {
-        if (item.parent_id === parentId) {
+    for (const item of data) 
+    {
+        if (item.parent_id === parentId) 
+        {
             const children = buildTree(data, item.id);
-            if (children.length) {
+            if (children.length) 
+            {
                 item.children = children;
             }
             tree.push(item);

@@ -1,6 +1,9 @@
 <?php
+
 namespace Catalog;
+
 use PDO;
+
 class ConnectDB
 {
     private static $instance = null;
@@ -8,7 +11,8 @@ class ConnectDB
 
     protected function __construct()
     {
-        if ($this->connection == null) {
+        if ($this->connection == null) 
+        {
             //Подключение к БД
             $ini_array = parse_ini_file($_SERVER["DOCUMENT_ROOT"].'/config.ini');
 
@@ -29,6 +33,7 @@ class ConnectDB
             //Создание объекта, если подключения нет
             self::$instance = new static();
         }
+        
         return self::$instance;
     }
 
@@ -38,7 +43,7 @@ class ConnectDB
         return static::getInstance()->connection;
     }
 
-    public static function prepare($statement): \PDOStatement
+    public static function prepare(string $statement): \PDOStatement
     {
         //Подготовка запроса
         return static::connect()->prepare($statement);

@@ -1,5 +1,5 @@
 $('#create-node').submit(function(event){
-    var formData ={
+    var formData = {
         node_name: $('#node_name').val().trim(),
         node_list: $('#select_add_node').val(),
         form_type: $('#form_type').val(),
@@ -28,7 +28,8 @@ $('#create-node').submit(function(event){
             },
             error: function(xhr, status, error){
                 //отображение сообщения об ошибке
-                console.error(xhr);
+                document.getElementById('add_node_message').innerHTML = '';
+                document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>Что-то пошло не так</div>";
             }
         });
     }

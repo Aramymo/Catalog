@@ -20,7 +20,8 @@ $('#delete-node').submit(function(event){
             },
             error: function(xhr, status, error){
                 //отображение сообщения об ошибке
-                console.error(xhr);
+                document.getElementById('delete_node_message').innerHTML = '';
+                document.getElementById("delete_node_message").innerHTML += "<div class='centered_text'>Что-то пошло не так</div>";
             }
         });
     }

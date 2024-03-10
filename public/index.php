@@ -30,7 +30,7 @@
           </div>
         </nav>
 
-        <button id="add-btn" type="button" onclick="hideAddMessageDiv()" class="btn btn-primary mt2" data-bs-toggle="modal" data-bs-target="#add-window">
+        <button id="add_button" type="button" onclick="hideAddMessageDiv()" class="btn btn-primary mt2" data-bs-toggle="modal" data-bs-target="#add-window">
           Добавить
         </button>
 
@@ -60,7 +60,7 @@
           </form>
         </div>
 
-        <button type="button" class="btn btn-danger mt2" onclick="hideDeleteMessageDiv()" data-bs-toggle="modal" data-bs-target="#delete-window">
+        <button id="delete_button" type="button" class="btn btn-danger mt2" onclick="hideDeleteMessageDiv()" data-bs-toggle="modal" data-bs-target="#delete-window">
           Удалить
         </button>
 
