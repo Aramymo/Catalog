@@ -1,4 +1,10 @@
-function displayCatalog(items, level = 0) {
+function displayCatalog(items)
+{
+    document.getElementById('catalog_node_list').innerHTML = ' ';
+    generateCatalog(items);
+}
+
+function generateCatalog(items, level = 0) {
     items.forEach(item => {
         if(level == 0)
         {
@@ -14,7 +20,7 @@ function displayCatalog(items, level = 0) {
         if (item.children && item.children.length > 0) {
             parent_id = item["id"];
             document.getElementById(li_name).innerHTML += '<ul class="dropdown-menu" id ="catalog_node_list'+ parent_id + level +'"></ul>';
-            displayCatalog(item.children, level + 1); // Рекурсивно обрабатываем вложенные элементы
+            generateCatalog(item.children, level + 1); // Рекурсивно обрабатываем вложенные элементы
         }
     });
 }

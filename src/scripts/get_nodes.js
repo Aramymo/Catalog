@@ -1,6 +1,5 @@
 document.onload = getTreeData();
-// btnAdd = document.getElementById("btn-add");
-// btnAdd.addEventListener('click', showUser());
+var treeData = [];
 function getTreeData()
 {
     $.ajax({
@@ -9,11 +8,8 @@ function getTreeData()
         dataType: "json",
         cache: false,
         success: function(data){
-            //отображение сообщения об успехе
-            //console.log(data);
             treeData = buildTree(data);
             displayCatalog(treeData);
-            console.log(treeData);
             displaySelectNode(treeData,'add_node');
             displaySelectNode(treeData,'delete_node');
         },

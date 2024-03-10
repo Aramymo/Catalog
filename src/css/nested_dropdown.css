@@ -1,0 +1,14 @@
+.dropdown-submenu .dropdown-menu {
+    padding: 8px;
+    left: 100%;
+    top: 0;
+}
+.dropdown-submenu {
+    position: relative;
+}
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+.mt2{
+    margin-top: 2%;
+}

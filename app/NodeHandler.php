@@ -17,7 +17,6 @@ class NodeHandler
         }
         else
         {
-            echo $node_id;
             if($node_id === "null")
             {
                 $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
@@ -32,7 +31,7 @@ class NodeHandler
                 $stmt->bindParam(':node_id', $node_id);
             }
             $stmt->execute();
-            $node_name = $node_name . " добавлен";
+            $node_name = $node_name." добавлен";
             return $node_name;
         }
     }
@@ -56,7 +55,7 @@ class NodeHandler
         $stmt = ConnectDB::prepare('DELETE FROM catalog.categories WHERE id = :element_id;');
         $stmt->bindParam(':element_id', $node_id);
         $stmt->execute();
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $result = "Категория и все её подкатегории удалены";
         return $result;
     }
 }

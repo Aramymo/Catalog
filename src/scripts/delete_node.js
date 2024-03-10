@@ -3,7 +3,6 @@ $('#delete-node').submit(function(event){
         node_list: $('#select_delete_node').val(),
         form_type: $('#delete_form').val(),
     };
-    console.log(formData);
     $.ajax({
         url : "http://localhost:8888/app/Controller.php",
         type: "POST",
@@ -12,16 +11,19 @@ $('#delete-node').submit(function(event){
         encode: true,
         success: function(data){
             //отображение сообщения об успехе
-            console.log(data);
+            getTreeData();
+            document.getElementById('delete_node_message').innerHTML = '';
+            document.getElementById("delete_node_message").innerHTML += "<div class='centered_text'>" + data["message"] + "</div>";
         },
         error: function(xhr, status, error){
             //отображение сообщения об ошибке
             console.error(xhr);
-            console.error(status);
-            console.error(error);
-            document.getElementById('node_message').innerHTML = '';
-            document.getElementById("node_message").innerHTML += "<div class='review_send_status_error centered_text'>Отказ</div>";
         }
     });
     event.preventDefault();
 });
+
+function hideDeleteMessageDiv()
+{
+    document.getElementById('delete_node_message').innerHTML = '';
+}
