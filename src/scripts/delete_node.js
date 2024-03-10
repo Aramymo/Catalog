@@ -7,7 +7,7 @@ $('#delete-node').submit(function(event){
     if(confirm("Удалить элемент и все его подкатегории?"))
     {
         $.ajax({
-            url : "http://localhost:8888/app/Controller.php",
+            url : "/app/Controller.php",
             type: "POST",
             dataType: "json",
             data: formData,

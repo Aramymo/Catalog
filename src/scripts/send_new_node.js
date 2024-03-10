@@ -14,7 +14,7 @@ $('#create-node').submit(function(event){
     else
     {
         $.ajax({
-            url : "http://localhost:8888/app/Controller.php",
+            url : "/app/Controller.php",
             type: "POST",
             dataType: "json",
             data: formData,
@@ -40,4 +40,5 @@ $('#create-node').submit(function(event){
 function hideAddMessageDiv()
 {
     document.getElementById('add_node_message').innerHTML = '';
+    document.getElementById('node_name').value = '';
 }

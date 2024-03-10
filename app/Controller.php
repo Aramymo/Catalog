@@ -1,6 +1,6 @@
 <?php
 namespace Catalog;
-require_once '../vendor/autoload.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/vendor/autoload.php';
 use Catalog\NodeHandler;
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -31,5 +31,8 @@ if($_SERVER['REQUEST_METHOD'] === 'GET')
 {
     $nodes = NodeHandler::getNodes();
     header('Content-Type: application/json; charset=utf-8');
+    foreach ($nodes as &$node) {
+        $node['name'] = htmlspecialchars($node['name'], ENT_QUOTES, 'UTF-8');
+    }
     echo json_encode($nodes);
 }

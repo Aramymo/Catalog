@@ -10,9 +10,11 @@ class ConnectDB
     {
         if ($this->connection == null) {
             //Подключение к БД
+            $ini_array = parse_ini_file($_SERVER["DOCUMENT_ROOT"].'/config.ini');
+
             $this->connection = new \PDO(
-                "mysql:host=localhost;dbname=catalog",
-                "root", "",
+                "mysql:host={$ini_array["DB_host"]};dbname=catalog",
+                $ini_array["DB_login"], $ini_array["DB_password"],
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
                 ]);

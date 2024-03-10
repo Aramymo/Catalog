@@ -1,37 +1,30 @@
 <?php
 namespace Catalog;
-require_once '../vendor/autoload.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/vendor/autoload.php';
 use Catalog\ConnectDB;
+use ErrorException;
+
 class NodeHandler
 {
+    const MAX_NEST_LEVEL = 3;
     //Создание нового узла
     public static function createNode($node_name, $node_id)
     {
-        //Проверка на наличие записи
-        $stmt = ConnectDB::prepare('SELECT COUNT(name) FROM catalog.categories
-                                    WHERE name = :node_name');
-        $stmt->bindParam(':node_name', $node_name);
-        $stmt->execute();
-        $count = $stmt->fetchColumn();
-        if($count > 0)
+        try
         {
-            //Если запись найдена
-            return $node_name." уже существует";
-        }
-        else
-        {
+            static::validateNode($node_name, $node_id);
             //Если запись не найдена
             if($node_id === "null")
             {
                 //Если корневой элемент
-                $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
+                $stmt = ConnectDB::prepare('INSERT INTO categories(name,parent_id)
                                     VALUES (:node_name, NULL)');
                 $stmt->bindParam(':node_name', $node_name);
             }
             else
             {
                 //Если подкатегория
-                $stmt = ConnectDB::prepare('INSERT INTO catalog.categories(name,parent_id)
+                $stmt = ConnectDB::prepare('INSERT INTO categories(name,parent_id)
                                     VALUES (:node_name, :node_id)');
                 $stmt->bindParam(':node_name', $node_name);
                 $stmt->bindParam(':node_id', $node_id);
@@ -39,6 +32,10 @@ class NodeHandler
             $stmt->execute();
             $node_name = $node_name." добавлен";
             return $node_name;
+        }
+        catch(ErrorException $e)
+        {
+            return $e->getMessage();
         }
     }
 
@@ -54,9 +51,9 @@ class NodeHandler
         //--Подэлемент
         //Корневой элемент...
         $stmt = ConnectDB::prepare('WITH RECURSIVE Tree AS (
-            SELECT id, name, parent_id FROM catalog.categories WHERE parent_id IS NULL
+            SELECT id, name, parent_id FROM categories WHERE parent_id IS NULL
             UNION ALL
-            SELECT c.id, c.name, c.parent_id FROM catalog.categories c
+            SELECT c.id, c.name, c.parent_id FROM categories c
             JOIN Tree t ON c.parent_id = t.id
             )
             SELECT * FROM Tree;');
@@ -68,10 +65,41 @@ class NodeHandler
     //Удаление узла и его подузлов
     public static function deleteNode($node_id)
     {
-        $stmt = ConnectDB::prepare('DELETE FROM catalog.categories WHERE id = :element_id;');
+        $stmt = ConnectDB::prepare('DELETE FROM categories WHERE id = :element_id;');
         $stmt->bindParam(':element_id', $node_id);
         $stmt->execute();
         $result = "Категория и все её подкатегории удалены";
         return $result;
+    }
+
+    protected static function validateNode($node_name, $node_id)
+    {
+        $stmt = ConnectDB::prepare('SELECT COUNT(name) FROM categories
+                                    WHERE name = :node_name');
+        $stmt->bindParam(':node_name', $node_name);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        if($count > 0)
+        {
+            //Если запись найдена
+            $message = $node_name." уже существует";
+            throw new ErrorException($message);
+        }
+
+        $stmt = ConnectDB::prepare('WITH RECURSIVE category_path (id, name, lvl) AS ( 
+            SELECT id, name, 0 lvl 
+            FROM categories WHERE parent_id IS NULL 
+            UNION ALL 
+            SELECT c.id, c.name,cp.lvl + 1 FROM category_path AS cp JOIN categories AS c 
+            ON cp.id = c.parent_id ) 
+            SELECT lvl FROM category_path WHERE id = :node_id;');
+        $stmt->bindParam(':node_id', $node_id);
+        $stmt->execute();
+        $current_node_nest_level = $stmt->fetch()["lvl"];
+        if($current_node_nest_level >= static::MAX_NEST_LEVEL - 1)
+        {
+            $message = "Уровень вложенности превысил ". static::MAX_NEST_LEVEL;
+            throw new ErrorException($message);
+        }
     }
 }

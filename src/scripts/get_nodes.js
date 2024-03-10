@@ -1,11 +1,10 @@
 //загрузка и отображение при загрузке страницы
 document.onload = getTreeData();
-
 //получает данные из бд и отображает
 function getTreeData()
 {
     $.ajax({
-        url : "http://localhost:8888/app/Controller.php",
+        url : "/app/Controller.php",
         type: "GET",
         dataType: "json",
         cache: false,
