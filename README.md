@@ -8,7 +8,7 @@
 
 Сервер создавался на php: php -S localhost
 
-SQL запрос для создания БД хранится в bd/migrations
+SQL запрос для создания БД хранится в db/migrations
 
 Данные для подключения к БД хранятся в config.ini
 
