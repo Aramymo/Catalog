@@ -10,16 +10,24 @@ function getTreeData()
         cache: false,
         success: function(data){
             //загрузка
+            console.log(data);
             treeData = buildTree(data);
+            if(!data.length)
+            {
+                displayCatalogError('Нет предметов в каталоге');
+            }
+            else
+            {
+                displayCatalog(treeData);
+                displaySelectNode(treeData,'delete_node');
+            }
             //отображение
-            displayCatalog(treeData);
             displaySelectNode(treeData,'add_node');
-            displaySelectNode(treeData,'delete_node');
         },
         error: function(xhr, status, error){
             //отображение сообщения об ошибке
             alert("Проблема с подключением к базе данных");
-            document.getElementById('catalog_node_list').innerHTML = '<li class="dropdown-menu"><span class="dropdown-item"Ошибка при отображении каталога</span></li>';
+            displayCatalogError("Ошибка при отображении каталога");
             document.getElementById("delete_button").disabled = true;
             document.getElementById("add_button").disabled = true;
         }
@@ -43,4 +51,10 @@ function buildTree(data, parentId = null)
         }
     }
     return tree;
+}
+
+function displayCatalogError(message)
+{
+    document.getElementById('catalog_node_list').innerHTML = ' ';
+    document.getElementById('catalog_node_list').innerHTML = '<li class="dropdown-submenu"> <span class="dropdown-item">' + message + '</span></li>';
 }

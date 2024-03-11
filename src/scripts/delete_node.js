@@ -3,33 +3,37 @@ $('#delete-node').submit(function(event){
         node_list: $('#select_delete_node').val(),
         form_type: $('#delete_form').val(),
     };
-    //подтверждение удаления
-    if(confirm("Удалить элемент и все его подкатегории?"))
+    if(formData.node_list === null)
     {
-        $.ajax({
-            url : "/app/Controller.php",
-            type: "POST",
-            dataType: "json",
-            data: formData,
-            encode: true,
-            success: function(data){
-                //обновление данных
-                getTreeData();
-                document.getElementById('delete_node_message').innerHTML = '';
-                document.getElementById("delete_node_message").innerHTML += "<div class='centered_text'>" + data["message"] + "</div>";
-            },
-            error: function(xhr, status, error){
-                //отображение сообщения об ошибке
-                document.getElementById('delete_node_message').innerHTML = '';
-                document.getElementById("delete_node_message").innerHTML += "<div class='centered_text'>Что-то пошло не так</div>";
-            }
-        });
+        showMessageInDelete('Невозможно удалить этот узел');
     }
     else
     {
-        document.getElementById('delete_node_message').innerHTML = '';
-        document.getElementById("delete_node_message").innerHTML += "<div class='centered_text'>Удаление отменено</div>";
+        if(confirm("Удалить элемент и все его подкатегории?"))
+        {
+            $.ajax({
+                url : "/app/Controller.php",
+                type: "POST",
+                dataType: "json",
+                data: formData,
+                encode: true,
+                success: function(data){
+                    //обновление данных
+                    getTreeData();
+                    showMessageInDelete(data["message"]);
+                },
+                error: function(xhr, status, error){
+                    //отображение сообщения об ошибке
+                    showMessageInDelete('Что-то пошло не так');
+                }
+            });
+        }
+        else
+        {
+            showMessageInDelete('Удаление отменено');
+        }
     }
+    //подтверждение удаления
     event.preventDefault();
 });
 
@@ -37,4 +41,10 @@ $('#delete-node').submit(function(event){
 function hideDeleteMessageDiv()
 {
     document.getElementById('delete_node_message').innerHTML = '';
+}
+
+function showMessageInDelete(message)
+{
+    document.getElementById('delete_node_message').innerHTML = '';
+    document.getElementById("delete_node_message").innerHTML += "<div class='centered_text'>"+ message +"</div>";
 }

@@ -8,8 +8,7 @@ $('#create-node').submit(function(event){
     if(formData["node_name"].length === 0)
     {
         //если имя пустое вывод сообщения
-        document.getElementById('add_node_message').innerHTML = '';
-        document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>Введите имя</div>";
+        showMessageInAdd('Введите имя');
     }
     else
     {
@@ -23,13 +22,11 @@ $('#create-node').submit(function(event){
                 //обновление деревьев сразу после запроса
                 getTreeData();
                 //отображение результата запроса
-                document.getElementById('add_node_message').innerHTML = '';
-                document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>" + data["message"] + "</div>";
+                showMessageInAdd(data["message"]);
             },
             error: function(xhr, status, error){
                 //отображение сообщения об ошибке
-                document.getElementById('add_node_message').innerHTML = '';
-                document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>Что-то пошло не так</div>";
+                showMessageInAdd('Что-то пошло не так');
             }
         });
     }
@@ -42,4 +39,10 @@ function hideAddMessageDiv()
 {
     document.getElementById('add_node_message').innerHTML = '';
     document.getElementById('node_name').value = '';
+}
+
+function showMessageInAdd(message)
+{
+    document.getElementById('add_node_message').innerHTML = '';
+    document.getElementById("add_node_message").innerHTML += "<div class='centered_text'>"+ message +"</div>";
 }
