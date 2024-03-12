@@ -2,7 +2,7 @@
 
 Сам каталог хранится по принципу Список смежности (Adjacency List).
 
-В проекте были использованы: composer, mysql, php, javascript, ajax, html, css, bootstrap.
+В проекте были использованы: composer, mysql, php, javascript, ajax, html, css, bootstrap. На создание ушло ~28 часов.
 
 Страница находится на: localhost/public
 
